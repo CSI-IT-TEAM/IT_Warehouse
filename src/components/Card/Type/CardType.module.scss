@@ -1,0 +1,85 @@
+.b-card-selected {
+    background: linear-gradient(to top, #b7e3ff -30%, #fff) !important;
+    border-color: #9BCCEC !important;
+
+    .title {
+        color: #5550a5 !important;
+        text-shadow: 1px 1px 0 #f6f7f8;
+    }
+
+    .b-icon {
+        opacity: 1 !important;
+    }
+}
+
+.b-card-4 {
+    color: #1b1b1b;
+    height: 250px;
+    position: relative;
+    border: 6px solid #f5f5f5;
+    border-radius: 8px;
+    line-height: 150%;
+    padding: 16px;
+    background: #fff;
+    background-blend-mode: multiply;
+    background: linear-gradient(to top, #f6f7f8 -50%, #fff);
+    transition: all 1s ease-in-out;
+
+    @media screen and (max-width: 479px) {
+        height: auto;
+    }
+
+    .b-thumb {
+        width: 160px;
+        position: absolute;
+        top: 5px;
+        left: 50%;
+        transform: translateX(-50%);
+
+        @media screen and (max-width: 479px) {
+            position: relative;
+            width: 100%;
+        }
+    }
+
+    .b-icon {
+        position: absolute;
+        right: 0;
+        top: 0;
+        opacity: 0;
+        transition: all .4s ease;
+    }
+
+    .card-front {
+        bottom: 16px;
+        left: 0;
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        transition: transform 1s cubic-bezier(0.785, 0.135, 0.150, 0.860);
+
+        @media screen and (max-width: 479px) {
+            position: relative;
+            margin-top: 20px;
+            bottom: 0;
+        }
+    }
+
+    /*Text*/
+    .title {
+        font-size: 24px;
+        font-weight: bold;
+        font-family: Nunito, sans-serif;
+        color: #25799a;
+    }
+
+    .subtitle {
+        font-weight: 700;
+        color: rgba(0, 0, 0, 0.6);
+    }
+
+    /*Hover*/
+    &:hover {
+        background-color: #1b1b1b25;
+    }
+}

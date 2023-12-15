@@ -1,0 +1,54 @@
+{
+    "not-found": "Mã QR không hợp lệ!!!",
+    "safety": "Tiêu chuẩn an toàn",
+    "in_stock": "Hàng tồn",
+    "warehouse": "Kho hàng",
+    "login": "Đăng nhập",
+    "welcome": "Xin chào",
+    "no-data_found": "Không tìm thấy dữ liệu!!!",
+
+    "btn_submit": "Xác Nhận",
+    "btn_cancel": "Hủy Bỏ",
+    "btn_yes": "Có",
+    "btn_no": "Không",
+    "btn_goback": "Về trang chủ",
+    "btn_reset": "Đặt lại ngay",
+    "btn_scan": "Quét mã",
+    "btn_change_pass": "Đổi mật khẩu",
+    "btn_logout": "Đăng xuất",
+    "btn_confirm": "Xác nhận",
+    "btn_go_hom": "Về trang chủ",
+
+    "frm_fty": "Nhà máy",
+    "frm_line": "Xưởng",
+    "frm_loc": "Vị trí",
+    "frm_req_date": "Ngày yêu cầu",
+    "frm_style": "Mã hàng",
+    "frm_item_cd": "Mã Item",
+    "frm_item_nm": "Tên Item",
+    "frm_trip": "Chuyến",
+    "frm_req": "Yêu cầu",
+    "frm_out": "Xuất hàng",
+    "frm_oldpass": "Mật khẩu cũ",
+    "frm_newpass": "Mật khẩu mới",
+    "frm_confirmpass": "Xác nhận lại mật khẩu",
+
+    "pl_oldpass": "Nhập mật khẩu hiện tại",
+    "pl_newpass": "Nhập mật khẩu mới",
+    "pl_confirmpass": "Nhập lại mật khẩu mới",
+    "pl_search": "Nhập từ khóa tìm kiếm...",
+
+    "notify_title": "Scan Mã QR",
+    "notify_desc": "Chọn loại scan mã QR để quản lý dữ liệu kho",
+    "change_title": "Đổi Mật Khẩu",
+    "change_desc": "Hãy chắc chắn rằng bạn nhớ mật khẩu của mình",
+    "wh_result_desc": "Danh sách thiết bị của vị trí này tính đến hiện tại",
+
+    "plholder_out": "Nhập số lượng xuất hàng",
+
+    "404_title": "Oops! Trang không tìm thấy",
+    "404_desc": "Trang bạn đang tìm kiếm có thể đã bị xóa, thay đổi tên hoặc tạm thời không khả dụng",
+
+    "validate_data": "Dữ liệu không được rỗng",
+    "validate_equal": "Dữ liệu phải giống nhau"
+}

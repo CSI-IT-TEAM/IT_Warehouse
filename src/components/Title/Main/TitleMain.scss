@@ -1,0 +1,27 @@
+@import "../../../styles/color.scss";
+
+.s-title-2{
+    color: #2b3a4a !important;
+    font-weight: 700 !important;
+    margin-bottom: 15px !important;
+    margin-top: 10px !important;
+    display: flex;
+    align-items: center;
+
+    @media screen and (max-width: 479px) {
+        font-size: 20px !important;
+        margin: 20px 0 10px !important;
+    }
+
+    & > span {
+        font-size: 15px;
+        border: 3px solid #5550a5;
+        border-radius: 50%;
+        width: 25px;
+        height: 26px;
+        display: inline-block;
+        text-align: center;
+        margin-right: 7px;
+        font-weight: bold;
+    }
+}

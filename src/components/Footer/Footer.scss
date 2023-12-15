@@ -1,0 +1,20 @@
+@import "../../styles/color.scss";
+
+.s-footer {
+    background: transparent linear-gradient(90deg, $color-blue-light, $color-blue-bold) repeat scroll 0 0;
+    padding: 20px 0;
+    color: $color-white;
+    text-align: center;
+
+    @media screen and (max-width: 479px) {
+        padding: 20px 0;
+    }
+
+    &-title{
+        font-size: 16px !important;
+
+        @media screen and (max-width: 479px) {
+            font-size: 15px !important;
+        }
+    }
+}

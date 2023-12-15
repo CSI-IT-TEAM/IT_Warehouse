@@ -1,0 +1,117 @@
+@import "../../styles/color.scss";
+@import "../../styles/mixin.scss";
+
+.s-layout{
+    padding: 15px 0;
+    @include flex(center, center);
+    background-size: contain;
+    flex-direction: column;
+    background-image: url("../../assets/images/backgrounds/bg-01.png");
+    background-position: 50%;
+    background-repeat: repeat;
+
+    .b-box{
+        width: 500px;
+        height: auto;
+        border-radius: 10px;
+        background-color: $color-white;
+        overflow: hidden;
+
+        @media screen and (max-width: 479px) {
+            width: 90%;
+        }
+    }
+
+    .s-bot{
+        margin-top: 40px;
+
+        @media screen and (max-width: 479px) {
+            margin-top: 20px;
+        }
+    }
+
+    .s-validate{
+        color: rgba(0,0,0,.4);
+        font-size: 14px;
+        margin-top: 5px;
+        text-align: right;
+        font-weight: 500;
+        font-style: italic;
+    }
+
+    .s-form {
+        padding: 0 25px;
+
+        @media screen and (max-width: 479px) {
+            padding: 0 15px;
+        }
+    
+        .b-thumb {
+            margin: 0 40px 40px;
+
+            @media screen and (max-width: 479px) {
+                margin: 0 100px;
+            }
+        }
+    
+        .b-bot{
+            margin-top: 50px;
+        }
+
+        .b-input {
+            background-color: #f8f6f7;
+
+            label{
+                color: #5550a5 !important;
+                font-weight: 700 !important;
+            }
+
+            input{
+                font-weight: 600;
+            }
+        }
+    
+        .p-title {
+            display: grid;
+            font-size: 40px;
+            line-height: 1.2;
+            text-align: center;
+            font-weight: bold;
+            padding-bottom: 15px;
+            font-family: Nunito, sans-serif !important;
+            background-image: radial-gradient(circle, #2b3a4a, #5550a5);
+            color: transparent;
+            background-clip: text;
+            -webkit-background-clip: text;
+
+            @media screen and (max-width: 479px) {
+                font-size: 30px;
+            }
+
+            &:after{
+                //content: '';
+                width: 80px;
+                height: 5px;
+                background-color: $color-bg;
+                position: relative;
+                display: inherit;
+                border-radius: 10px;
+                margin: 5px auto 0;
+            }
+        }
+    
+        .p-label {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.5;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-family: Nunito, sans-serif !important;
+        }
+    
+        .p-info {
+            color: #555;
+            margin-right: 3px;
+        }
+    }
+}

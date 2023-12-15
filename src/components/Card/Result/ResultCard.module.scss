@@ -1,0 +1,118 @@
+.b-border--none{
+    border-bottom: none !important;
+    margin-bottom: 0 !important;
+}
+
+.b-card-5 {
+    padding-bottom: 15px;
+    margin-bottom: 5px;
+    border-bottom: 2px dashed rgba(0, 0, 0, 0.3);
+
+    @media screen and (max-width: 479px) {
+        padding-bottom: 10px;
+    }
+
+    .b-status {
+        border-radius: 10px;
+        padding: 5px 15px;
+        font-size: 17px;
+        display: flex;
+        gap: 5px;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+
+        @media screen and (max-width: 479px) {
+            font-size: 16px;
+            padding: 7px 20px;
+            display: flex;
+            min-width: 120px;
+        }
+    }
+
+    .b-status--green {
+        background-color: #14c86e;
+        color: #fff;
+        text-shadow: 1px 1px 1px #333;
+    }
+
+    .b-status--yellow {
+        background-color: #ffb04f;
+    }
+
+    .b-status--red {
+        background-color: #fa371e;
+        color: #fff;
+        text-shadow: 1px 1px 1px #333;
+    }
+
+    .b-num {
+        min-width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #ececec;
+        border-radius: 7px;
+        font-family: Nunito, sans-serif;
+        font-weight: 700;
+        font-size: 17px;
+    }
+
+    .b-title {
+        font-size: 18px;
+        color: #425675;
+        font-weight: 700;
+
+        &:after {
+            background-color: #25799a;
+            border-radius: 10px;
+            content: "";
+            display: inherit;
+            height: 4px;
+            margin-top: 3px;
+            position: relative;
+            width: 40px;
+        }
+    }
+
+    .b-desc {
+        font-size: 17px;
+        font-weight: 600;
+        margin-bottom: 5px;
+        margin-top: 5px;
+    }
+
+    .b-icon {
+        background-color: #1fcac5;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+    }
+
+    .item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        .regular-text {
+            color: rgba(0, 0, 0, 0.6);
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .big-text {
+            font-weight: bold;
+            font-size: 22px;
+            color: green;
+
+            @media screen and (max-width: 479px) {
+                line-height: 1.2;
+            }
+        }
+    }
+}
