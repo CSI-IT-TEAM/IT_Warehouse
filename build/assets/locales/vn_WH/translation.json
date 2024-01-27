@@ -43,6 +43,7 @@
     "change_title": "Đổi Mật Khẩu",
     "change_desc": "Hãy chắc chắn rằng bạn nhớ mật khẩu của mình",
     "wh_result_desc": "Danh sách thiết bị của vị trí này tính đến hiện tại",
+    "equip_result_desc": "Thông tin chi tiết của thiết bị này",
 
     "plholder_out": "Nhập số lượng xuất hàng",
 
@@ -50,5 +51,12 @@
     "404_desc": "Trang bạn đang tìm kiếm có thể đã bị xóa, thay đổi tên hoặc tạm thời không khả dụng",
 
     "validate_data": "Dữ liệu không được rỗng",
-    "validate_equal": "Dữ liệu phải giống nhau"
+    "validate_equal": "Dữ liệu phải giống nhau",
+
+    "prev_user": "Người dùng trước",
+    "incoming": "Ngày In",
+    "waranty": "Ngày bảo hành",
+    "repair": "Ngày sửa chữa",
+    "abrogation": "Ngày hủy",
+    "last_outgoing": "Ngày Out mới nhất"
 }

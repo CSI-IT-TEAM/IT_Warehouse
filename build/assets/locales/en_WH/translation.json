@@ -43,6 +43,7 @@
     "change_title": "Change Password",
     "change_desc": "Make sure you remember your password",
     "wh_result_desc": "List of equipment in this location as of now",
+    "equip_result_desc": "Detail information of this device",
 
     "plholder_out": "Type Outgoing Qty",
 
@@ -50,5 +51,12 @@
     "404_desc": "The page you are looking for might have been removed, had its name changed or is temporarily unvailable",
 
     "validate_data": "This data field is required",
-    "validate_equal": "These data fields must be the same"
+    "validate_equal": "These data fields must be the same",
+
+    "prev_user": "Previous User",
+    "incoming": "Incoming",
+    "waranty": "Waranty",
+    "repair": "Repair",
+    "abrogation": "Abrogation",
+    "last_outgoing": "Last Outgoing"
 }

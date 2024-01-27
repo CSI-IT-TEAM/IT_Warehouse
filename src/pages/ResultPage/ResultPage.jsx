@@ -16,12 +16,13 @@ import styles from "./ResultPage.module.scss";
 const width = window.innerWidth;
 const height = (width <= 479 ? window.innerHeight - 175 : window.innerHeight - 215) + "px";
 const ResultCard = lazy(() => import('../../components/Card/Result/ResultCard'));
+const EquipResultCard = lazy(() => import('../../components/Card/Result/EquipResultCard'));
 
 const ResultPage = () => {
 
     ////// Get Data From Homepage
     const location = useLocation();
-    const { plantCode, locCode, locName, whCode } = location?.state;
+    const { type, plantCode, locCode, locName, whCode } = location?.state;
 
     ////// Basic Data
     const [data, setData] = useState(null);
@@ -29,6 +30,7 @@ const ResultPage = () => {
     const [search, setSearch] = useState("");
     const [place, setPlace] = useState(locName);
     const [filter, setFilter] = useState(null); 
+    const [scanType, setScanType] = useState(type);
 
     ////// Dispatch
     const dispatch = useDispatch();
@@ -80,27 +82,42 @@ const ResultPage = () => {
     }
 
     ///// Handle Download
-    const fetchDownload = async(url, dataConfig, type) => {
+    const fetchDownload = async(url, dataConfig, dataType) => {
         let result = null;
+        let equipResult = null;
         scrollToTop();
 
-        switch(type){
+        switch(dataType){
             case "scan-qr":
                 result = await fetchData(url, dataConfig);
+                dataConfig.ARG_TYPE = "Q_EQUIP_SCAN";
+                equipResult = await fetchData(url, dataConfig);
 
-                if(result){
-                    if (result?.length > 0) {
-                        setPlace(prevData => result[0].NAME);
-                        navigate(".", {state: {plantCode: result[0].PLANT_CD, locCode: result[0].CODE, locName: result[0].NAME, whCode: whCode}});
-                    } else {
-                        handleCloseCamera();
-                        dispatch(commonAction.setTypeNotice("qr-error"));
-                        dispatch(commonAction.openNotice());
-                    }
+                if(result && result.length > 0){
+                    setPlace(prevData => result[0].NAME);
+                    navigate(".", {state: {type: "warehouse", plantCode: result[0].PLANT_CD, locCode: result[0].CODE, locName: result[0].NAME, whCode: whCode}});
+                }
+                else if(equipResult && equipResult.length > 0){
+                    setPlace(prevData => equipResult[0].LOC_NM);
+                    navigate(".", {state: {type: "equipment", plantCode: equipResult[0].PLANT_CD, locCode: equipResult[0].BARCODE, locName: equipResult[0].LOC_NM, whCode: whCode}});
                 }
                 else{
+                    handleCloseCamera();
+                    dispatch(commonAction.setTypeNotice("qr-error"));
+                    dispatch(commonAction.openNotice());
+
+                    setData(prevData => null);
+                    setFilter(prevData => null);
+                    setIsEmpty(prevData => true);
+                }
+
+                if(!result && !equipResult){
                     dispatch(commonAction.setTypeNotice("connect-failed"));
                     dispatch(commonAction.openNotice());
+
+                    setData(prevData => null);
+                    setFilter(prevData => null);
+                    setIsEmpty(prevData => true);
                 }
 
                 break;
@@ -112,14 +129,26 @@ const ResultPage = () => {
                 result = await fetchData(url, dataConfig);
         
                 if(result){
-                    if(result.length > 1){
-                        result.shift();
-                        setData(prevData => result);
-                        setFilter(prevData => result);
-                    }else{
-                        setData(prevData => null);
-                        setFilter(prevData => null);
-                        setIsEmpty(prevData => true);
+                    if(type === "warehouse"){
+                        if(result.length > 1){
+                            result.shift();
+                            setData(prevData => result);
+                            setFilter(prevData => result);
+                        }else{
+                            setData(prevData => null);
+                            setFilter(prevData => null);
+                            setIsEmpty(prevData => true);
+                        }
+                    }
+                    else if(type === "equipment"){
+                        if(result.length > 0){
+                            setData(prevData => result);
+                            setFilter(prevData => result);
+                        }else{
+                            setData(prevData => null);
+                            setFilter(prevData => null);
+                            setIsEmpty(prevData => true);
+                        }
                     }
                 }else{
                     setData(prevData => null);
@@ -137,8 +166,9 @@ const ResultPage = () => {
             navigate("/", {replace: true});
         } 
         else{
+            setScanType(scanType => type);
             fetchDownload(getScanDataURL, {
-                V_P_SCAN        :"Q_WH",
+                V_P_SCAN        : type === "warehouse" ? "Q_WH" : "Q_EQUIP",
                 V_P_TYPE        : "",
                 V_P_PLANT_CD    : plantCode,
                 V_P_WH_CD 	    : whCode,
@@ -152,7 +182,7 @@ const ResultPage = () => {
             }, "scan-data");
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[locCode]);
+    },[location]);
 
     ///// Handle Back Home
     const handleClick = () => {
@@ -183,65 +213,99 @@ const ResultPage = () => {
                     <Container>
                         <Box className={styles["s-form-content"]}>
                             <Box sx={{ width: "100%", minHeight: height, }}>
-                                <Box className={styles["b-card-3"]}>
-                                    <Typography className={styles["b-title"]}>{place}</Typography>
-                                    <Typography className={styles["b-desc"]}>{t('wh_result_desc')}</Typography>
-                                </Box>
-                                <form>
-                                    <Stack marginBottom={3}>
-                                        <TextField
-                                            label=""
-                                            inputProps={{ inputMode: 'text', }}
-                                            className={styles["b-input"]}
-                                            placeholder={t('pl_search')}
-                                            value={search}
-                                            onChange={handleFilter}
-                                            name="SEARCH"
-                                            color="info"
-                                            InputProps={{
-                                                startAdornment: (
-                                                    <InputAdornment position="start">
-                                                        <SearchIcon />
-                                                    </InputAdornment>
-                                                ),
-                                            }}
-                                            fullWidth
-                                        />
-                                    </Stack>
-                                </form>
-                                {!isEmpty && 
-                                    <Grid container spacing={1.5} className={styles["s-list"]}>
-                                        {filter !== null && filter?.length > 0 && filter.map((item, index) => {
+                                {scanType === "warehouse" &&
+                                    <>
+                                        <Box className={styles["b-card-3"]}>
+                                            <Typography className={styles["b-title"]}>{place}</Typography>
+                                            <Typography className={styles["b-desc"]}>{t('wh_result_desc')}</Typography>
+                                        </Box>
+                                        <form>
+                                            <Stack marginBottom={3}>
+                                                <TextField
+                                                    label=""
+                                                    inputProps={{ inputMode: 'text', }}
+                                                    className={styles["b-input"]}
+                                                    placeholder={t('pl_search')}
+                                                    value={search}
+                                                    onChange={handleFilter}
+                                                    name="SEARCH"
+                                                    color="info"
+                                                    InputProps={{
+                                                        startAdornment: (
+                                                            <InputAdornment position="start">
+                                                                <SearchIcon />
+                                                            </InputAdornment>
+                                                        ),
+                                                    }}
+                                                    fullWidth
+                                                />
+                                            </Stack>
+                                        </form>
+                                        {!isEmpty && 
+                                            <Grid container spacing={1.5} className={styles["s-list"]}>
+                                                {filter !== null && filter?.length > 0 && filter.map((item, index) => {
+                                                    return (
+                                                        <Grid key={index} item xs={12} sm={6} className={styles["s-list_item"]}>
+                                                            <Suspense fallback={<ResultSkelton />}>
+                                                                <ResultCard 
+                                                                    order={item.STT}
+                                                                    title={item.PART_GROUP}
+                                                                    desc={item.PART}
+                                                                    status={item.ORDER_PART.toUpperCase()}
+                                                                    safeQty={item.SAFETY_INV}
+                                                                    stockQty={item.STOCK_QTY}
+                                                                    last={index === filter.length - 1} />
+                                                            </Suspense>
+                                                        </Grid>
+                                                    );
+                                                })}
+                                                {filter == null && skeltonRows.map((item, index) => {
+                                                    return (
+                                                        <Grid key={index} item xs={12} sm={6}>
+                                                            <ResultSkelton />
+                                                        </Grid>
+                                                    )
+                                                })}
+                                            </Grid>
+                                        }
+                                        {isEmpty &&
+                                            <>
+                                                <EmptyCard />
+                                                <Box className={styles["s-bot"]}>
+                                                    <ButtonPrimary title={t('btn_go_hom')} handleClick={handleClick} name="go-back" />
+                                                </Box>
+                                            </>
+                                        }
+                                    </>
+                                }
+                                {scanType === "equipment" &&
+                                    <>
+                                        <Box className={styles["b-card-3"]}>
+                                            <Typography className={styles["b-title"]}>{place}</Typography>
+                                            <Typography className={styles["b-desc"]}>{t('equip_result_desc')}</Typography>
+                                        </Box>
+                                        {data !== null && data?.length > 0 && data.map((item, index) => {
                                             return (
-                                                <Grid key={index} item xs={12} sm={6} className={styles["s-list_item"]}>
-                                                    <Suspense fallback={<ResultSkelton />}>
-                                                        <ResultCard 
-                                                            order={item.STT}
-                                                            title={item.PART_GROUP}
-                                                            desc={item.PART}
-                                                            status={item.ORDER_PART.toUpperCase()}
-                                                            safeQty={item.SAFETY_INV}
-                                                            stockQty={item.STOCK_QTY}
-                                                            last={index === filter.length - 1} />
-                                                    </Suspense>
-                                                </Grid>
+                                                <Suspense key={index} fallback={<ResultSkelton />}>
+                                                    <EquipResultCard data={item} />
+                                                </Suspense>
                                             );
                                         })}
-                                        {filter == null && skeltonRows.map((item, index) => {
-                                            return (
-                                                <Grid key={index} item xs={12} sm={6}>
-                                                    <ResultSkelton />
-                                                </Grid>
-                                            )
-                                        })}
-                                    </Grid>
-                                }
-                                {isEmpty &&
-                                    <>
-                                        <EmptyCard />
-                                        <Box className={styles["s-bot"]}>
-                                            <ButtonPrimary title={t('btn_go_hom')} handleClick={handleClick} name="go-back" />
-                                        </Box>
+                                        {data === null &&
+                                            <Stack gap={1}>
+                                                <ResultSkelton />
+                                                <ResultSkelton />
+                                                <ResultSkelton />
+                                            </Stack >
+                                        }
+                                        {isEmpty &&
+                                            <>
+                                                <EmptyCard />
+                                                <Box className={styles["s-bot"]}>
+                                                    <ButtonPrimary title={t('btn_go_hom')} handleClick={handleClick} name="go-back" />
+                                                </Box>
+                                            </>
+                                        }
                                     </>
                                 }
                             </Box>

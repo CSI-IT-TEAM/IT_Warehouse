@@ -42,7 +42,8 @@ const HomePage = () => {
 
     //////Camera Option
     const handleOpenCamera = async () => {
-        //navigate("/scan-result", {state: {plantCode: "2110", locCode: "2110_10_A0001", locName: "Section 1", whCode: "10"}});
+        //navigate("/scan-result", {state: {type: type, plantCode: "2110", locCode: "2110_10_A0003", locName: "Section 3", whCode: "10"}});
+        //navigate("/scan-result", {state: {type: type, plantCode: "2110", locCode: "0000000023", locName: "Attendance MC AC2200", whCode: "10"}});
         setOpenCamera(true);
     }
 
@@ -53,22 +54,26 @@ const HomePage = () => {
     const handleScanSuccess = async (decodedText, decodedResult) => {
         if (!isNullOrEmpty(decodedText)) {
             await fetchDownload(downloadURL, {
-                ARG_TYPE: "Q_SCAN",
+                ARG_TYPE: type === "warehouse" ? "Q_SCAN" : "Q_EQUIP_SCAN",
                 ARG_EMPID: "",
                 ARG_WH: lastLogin.WH_CD,
                 ARG_SCAN: decodedText,
                 OUT_CURSOR: "" 
-            }, "scan_qr");
+            });
         }
     }
 
     /////// Validate Barcode
-    const fetchDownload = async (url, dataConfig, type) => {
+    const fetchDownload = async (url, dataConfig) => {
         const result = await fetchData(url, dataConfig);
 
         if(result){
             if (result?.length > 0) {
-                navigate("/scan-result", {state: {plantCode: result[0].PLANT_CD, locCode: result[0].CODE, locName: result[0].NAME, whCode: lastLogin.WH_CD}});
+                if(type === "warehouse"){
+                    navigate("/scan-result", {state: {type: type, plantCode: result[0].PLANT_CD, locCode: result[0].CODE, locName: result[0].NAME, whCode: lastLogin.WH_CD}});
+                }else{
+                    navigate("/scan-result", {state: {type: type, plantCode: result[0].PLANT_CD, locCode: result[0].BARCODE, locName: result[0].LOC_NM, whCode: lastLogin.WH_CD}});
+                }
             } else {
                 handleCloseCamera();
                 dispatch(commonAction.setTypeNotice("qr-error"));
@@ -79,12 +84,6 @@ const HomePage = () => {
             dispatch(commonAction.setTypeNotice("connect-failed"));
             dispatch(commonAction.openNotice());
         }
-    }
-
-    ////// Service under contruct
-    const handleContruct = () => {
-        dispatch(commonAction.setTypeNotice("under-construct"));
-        dispatch(commonAction.openNotice());
     }
 
     return (
@@ -107,12 +106,12 @@ const HomePage = () => {
                                 <Grid container spacing={1.5}>
                                     <Grid item xs={6}>
                                         <Suspense fallback={<div>Loading...</div>}>
-                                            <CardType title="Warehouse" subtitle="Management" thumb={warehouseImg} isSelect={type === "warehouse"} handleClick={() => {}} />
+                                            <CardType title="Warehouse" subtitle="Management" thumb={warehouseImg} isSelect={type === "warehouse"} handleClick={() => setType("warehouse")} />
                                         </Suspense>
                                     </Grid>
                                     <Grid item xs={6}>
                                         <Suspense fallback={<div>Loading...</div>}>
-                                            <CardType title="Equipments" subtitle="Management" thumb={equipImg} isSelect={type === "equipment"} handleClick={handleContruct} />
+                                            <CardType title="Equipments" subtitle="Management" thumb={equipImg} isSelect={type === "equipment"} handleClick={() => setType("equipment")} />
                                         </Suspense>
                                     </Grid>
                                 </Grid>
