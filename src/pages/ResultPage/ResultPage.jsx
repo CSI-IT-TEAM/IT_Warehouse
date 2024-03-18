@@ -291,11 +291,13 @@ const ResultPage = () => {
                                                 </Suspense>
                                             );
                                         })}
-                                        {data === null &&
+                                        {data === null && 
                                             <Stack gap={1}>
-                                                <ResultSkelton />
-                                                <ResultSkelton />
-                                                <ResultSkelton />
+                                                {skeltonRows.map((item, index) => {
+                                                    return (
+                                                        <ResultSkelton key={index}/>
+                                                    )
+                                                })}
                                             </Stack >
                                         }
                                         {isEmpty &&

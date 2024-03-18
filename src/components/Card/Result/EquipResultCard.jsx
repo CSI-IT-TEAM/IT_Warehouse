@@ -1,5 +1,7 @@
 import { Box, Stack, Grid } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { isNullOrEmpty } from '../../../functions';
+
 import CheckIcon from '@mui/icons-material/Check';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -39,7 +41,7 @@ const EquipResultCard = ({ data }) => {
                                 <span className={styles["regular-text"]}>Serial:</span>
                                 <span className={`${styles['big-text']} ${styles['medium-text']}`}>{data.SERIAL_NO}</span>
                             </div>
-                            {data.PREVIOUS_USER !== null &&
+                            {!isNullOrEmpty(data.PREVIOUS_USER) &&
                                 <div className={styles["item"]}>
                                     <CheckIcon className={styles["b-icon"]} />
                                     <span className={styles["regular-text"]}>{t('prev_user')}:</span>
@@ -69,7 +71,7 @@ const EquipResultCard = ({ data }) => {
                         </Stack>
                     </Stack>
                 </Grid>
-                {data.REPAIR_DATE !== null &&
+                {!isNullOrEmpty(data.REPAIR_DATE) &&
                     <Grid item xs={6}>
                         <Stack flexDirection="row" alignItems="center" gap={1} className={`${styles["b-card-6"]}`}>
                             <Box className={styles["b-num"]}><ConstructionIcon /></Box>
@@ -80,7 +82,7 @@ const EquipResultCard = ({ data }) => {
                         </Stack>
                     </Grid>
                 }
-                {data.ABROGATION_DATE !== null &&
+                {!isNullOrEmpty(data.ABROGATION_DATE) &&
                     <Grid item xs={6}>
                         <Stack flexDirection="row" alignItems="center" gap={1} className={`${styles["b-card-6"]}`}>
                             <Box className={styles["b-num"]}><GppMaybeIcon /></Box>
@@ -91,7 +93,7 @@ const EquipResultCard = ({ data }) => {
                         </Stack>
                     </Grid>
                 }
-                {data.OG_YMD !== null &&
+                {!isNullOrEmpty(data.OG_YMD) &&
                     <Grid item xs={12}>
                         <Stack flexDirection="row" alignItems="center" gap={1} className={`${styles["b-card-6"]}`}>
                             <Box className={styles["b-num"]}><LocalShippingIcon /></Box>

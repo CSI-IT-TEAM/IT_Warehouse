@@ -23,6 +23,7 @@ const CardType = lazy(() => import('../../components/Card/Type/CardType'));
 const HomePage = () => {
 
     ////// Initial Data
+    ///
     const [type, setType] = useState("warehouse");
 
     ///// User Data
