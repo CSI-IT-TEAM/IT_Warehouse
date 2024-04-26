@@ -211,7 +211,11 @@ const LoginPage = () => {
 
     ////// Redirect for trust source
     const handleRedirect = () => {
-        window.location.replace('https://172.30.10.120');
+        const baseUrl = 'https://172.30.10.120/';
+        // Construct the URL with query parameters
+        const url = new URL(baseUrl);
+        // Open the new website in a new tab
+        window.open(url.toString(), '_blank');
     }
 
     return (
