@@ -62,15 +62,17 @@ const EquipResultCard = ({ data }) => {
                         </Stack>
                     </Stack>
                 </Grid>
-                <Grid item xs={6}>
-                    <Stack flexDirection="row" alignItems="center" gap={1} className={`${styles["b-card-6"]}`}>
-                        <Box className={styles["b-num"]}><VerifiedUserIcon /></Box>
-                        <Stack gap={0.2}>
-                            <Box className={styles["b-title"]}>{t('waranty')}</Box>
-                            <Box className={styles["b-desc"]}>{data.WARRANTY_DATE}</Box>
+                {!isNullOrEmpty(data.WARRANTY_DATE) &&
+                    <Grid item xs={6}>
+                        <Stack flexDirection="row" alignItems="center" gap={1} className={`${styles["b-card-6"]}`}>
+                            <Box className={styles["b-num"]}><VerifiedUserIcon /></Box>
+                            <Stack gap={0.2}>
+                                <Box className={styles["b-title"]}>{t('waranty')}</Box>
+                                <Box className={styles["b-desc"]}>{data.WARRANTY_DATE}</Box>
+                            </Stack>
                         </Stack>
-                    </Stack>
-                </Grid>
+                    </Grid>
+                }
                 {!isNullOrEmpty(data.REPAIR_DATE) &&
                     <Grid item xs={6}>
                         <Stack flexDirection="row" alignItems="center" gap={1} className={`${styles["b-card-6"]}`}>

@@ -23,7 +23,6 @@ const CardType = lazy(() => import('../../components/Card/Type/CardType'));
 const HomePage = () => {
 
     ////// Initial Data
-    ///
     const [type, setType] = useState("warehouse");
 
     ///// User Data
@@ -71,9 +70,9 @@ const HomePage = () => {
         if(result){
             if (result?.length > 0) {
                 if(type === "warehouse"){
-                    navigate("/scan-result", {state: {type: type, plantCode: result[0].PLANT_CD, locCode: result[0].CODE, locName: result[0].NAME, whCode: lastLogin.WH_CD}});
+                    navigate("/scan-result", {state: {type: type, plantCode: lastLogin.PLANT_CD, locCode: result[0].CODE, locName: result[0].NAME, whCode: lastLogin.WH_CD}});
                 }else{
-                    navigate("/scan-result", {state: {type: type, plantCode: result[0].PLANT_CD, locCode: result[0].BARCODE, locName: result[0].LOC_NM, whCode: lastLogin.WH_CD}});
+                    navigate("/scan-result", {state: {type: type, plantCode: lastLogin.PLANT_CD, locCode: result[0].BARCODE, locName: result[0].LOC_NM, whCode: lastLogin.WH_CD}});
                 }
             } else {
                 handleCloseCamera();

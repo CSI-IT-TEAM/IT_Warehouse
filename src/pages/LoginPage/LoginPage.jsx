@@ -26,6 +26,7 @@ const LoginPage = () => {
     ///// Basic Data
     const lastLogin = localStorage.getItem("lastLoginWH") === null ? null : JSON.parse(localStorage.getItem("lastLoginWH"));
     const [data, setData] = useState({
+        PLANT_CD: lastLogin ? lastLogin.PLANT_CD : "",
         WH_CD: lastLogin ? lastLogin.WH_CD : "",
         EMP_ID: lastLogin ? lastLogin.EMP_ID : "",
         PASS: "",
@@ -93,6 +94,7 @@ const LoginPage = () => {
                         setData(prevData => {
                             return {
                                 ...prevData,
+                                PLANT_CD: '2110',
                                 WH_CD: '10',
                             }
                         });
@@ -103,6 +105,7 @@ const LoginPage = () => {
                     case "user":
                         sessionStorage.setItem("userDataWH", JSON.stringify(result[0]));
                         localStorage.setItem("lastLoginWH", JSON.stringify({
+                            PLANT_CD: data.PLANT_CD,
                             EMP_ID: result[0].EMPID,
                             WH_CD: data.WH_CD,
                         }));
@@ -182,7 +185,7 @@ const LoginPage = () => {
     ////// Default Events
     useEffect(() => {
         fetchDownload(downloadURL, {
-            ARG_TYPE: "Q_WH",
+            ARG_TYPE: "Q_WH_V2",
             ARG_EMPID: "",
             ARG_WH: "",
             ARG_SCAN: "",
@@ -193,12 +196,17 @@ const LoginPage = () => {
 
     ////// Handle Select
     const handleSelect = (name, value) => {
-        setData(prevData => {
-            return {
-                ...prevData,
-                [name]: value,
-            }
-        });
+        const splitArr = value.split('_');
+
+        if(splitArr.length === 2){
+            setData(prevData => {
+                return {
+                    ...prevData,
+                    PLANT_CD: splitArr[0],
+                    WH_CD: splitArr[1],
+                }
+            });
+        }
     }
 
     ////// Redirect for trust source
@@ -230,7 +238,7 @@ const LoginPage = () => {
                                     name="WH_CD"
                                     data={whData}
                                     placeholder="Chọn kho hàng"
-                                    cValue={data.WH_CD}
+                                    cValue={data.PLANT_CD + '_' + data.WH_CD}
                                     handleEvent={handleSelect}
                                     isValidate={true}
                                     message="Dữ liệu không được để trống" />

@@ -22,11 +22,13 @@ const ResultPage = () => {
 
     ////// Get Data From Homepage
     const location = useLocation();
+    const lastLogin = localStorage.getItem("lastLoginWH") === null ? null : JSON.parse(localStorage.getItem("lastLoginWH"));
     const { type, plantCode, locCode, locName, whCode } = location?.state;
 
     ////// Basic Data
     const [data, setData] = useState(null);
     const [isEmpty, setIsEmpty] = useState(false);
+    const [isLoad, setIsLoad] = useState(true);
     const [search, setSearch] = useState("");
     const [place, setPlace] = useState(locName);
     const [filter, setFilter] = useState(null); 
@@ -95,11 +97,11 @@ const ResultPage = () => {
 
                 if(result && result.length > 0){
                     setPlace(prevData => result[0].NAME);
-                    navigate(".", {state: {type: "warehouse", plantCode: result[0].PLANT_CD, locCode: result[0].CODE, locName: result[0].NAME, whCode: whCode}});
+                    navigate(".", {state: {type: "warehouse", plantCode: lastLogin.PLANT_CD, locCode: result[0].CODE, locName: result[0].NAME, whCode: whCode}});
                 }
                 else if(equipResult && equipResult.length > 0){
                     setPlace(prevData => equipResult[0].LOC_NM);
-                    navigate(".", {state: {type: "equipment", plantCode: equipResult[0].PLANT_CD, locCode: equipResult[0].BARCODE, locName: equipResult[0].LOC_NM, whCode: whCode}});
+                    navigate(".", {state: {type: "equipment", plantCode: lastLogin.PLANT_CD, locCode: equipResult[0].BARCODE, locName: equipResult[0].LOC_NM, whCode: whCode}});
                 }
                 else{
                     handleCloseCamera();
@@ -122,13 +124,14 @@ const ResultPage = () => {
 
                 break;
             case "scan-data":
+                setIsLoad(isLoad => true);
                 setIsEmpty(prevData => false);
                 setSearch(prevData => "");
                 await submitForm(true);
         
                 result = await fetchData(url, dataConfig);
         
-                if(result){
+                if(result !== null && result.length > 0){
                     if(type === "warehouse"){
                         if(result.length > 1){
                             result.shift();
@@ -150,7 +153,9 @@ const ResultPage = () => {
                             setIsEmpty(prevData => true);
                         }
                     }
+                    setIsLoad(isLoad => false);
                 }else{
+                    setIsLoad(isLoad => false);
                     setData(prevData => null);
                     setFilter(prevData => null);
                     setIsEmpty(prevData => true);
@@ -291,7 +296,7 @@ const ResultPage = () => {
                                                 </Suspense>
                                             );
                                         })}
-                                        {data === null && 
+                                        {isLoad && 
                                             <Stack gap={1}>
                                                 {skeltonRows.map((item, index) => {
                                                     return (
